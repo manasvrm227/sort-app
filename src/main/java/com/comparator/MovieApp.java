@@ -1,14 +1,13 @@
-package com.comparable;
+package com.comparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 /*
- * A comparable object is capable of comparing itself with another object.
- * here we can sort this by only one parameter.
- * If we want to sort with multiple parameter - Comparator.
- * sorting by year.
+ * Unlike Comparable, Comparator is external to the element type we are comparing. (Separate Class)
  */
+
 class Movie implements Comparable<Movie>{
 
 	private double rating;
@@ -52,9 +51,18 @@ class Movie implements Comparable<Movie>{
 
 }
 
-public class MovieApp{
+class NameComparator implements Comparator<Movie>{
+
+	@Override
+	public int compare(Movie o1, Movie o2) {
+		return o1.getName().compareTo(o2.getName());
+	}
+	
+}
+
+public class MovieApp {
 	public static void main(String[] args) {
-		ArrayList<Movie> list = new ArrayList<>();
+		ArrayList<Movie> list = new ArrayList<Movie>();
         list.add(new Movie("Force Awakens", 8.3, 2015));
         list.add(new Movie("Star Wars", 8.7, 1977));
         list.add(new Movie("Empire Strikes Back", 8.8, 1980));
@@ -65,7 +73,15 @@ public class MovieApp{
         });
         Collections.sort(list);
         System.out.println("--------------------------------");
-        System.out.println("Movies after sorting : ");
+        System.out.println("Movies after comparable sorting : ");
+        list.stream().forEach((movie) ->{
+        	System.out.println(movie.getName() + " "+movie.getRating() + " "+movie.getYear());
+        });
+        
+        Collections.sort(list, new NameComparator());
+        
+        System.out.println("--------------------------------");
+        System.out.println("Movies after Name Comparator sorting : ");
         list.stream().forEach((movie) ->{
         	System.out.println(movie.getName() + " "+movie.getRating() + " "+movie.getYear());
         });
